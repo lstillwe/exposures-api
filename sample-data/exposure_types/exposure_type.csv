@@ -1,8 +1,8 @@
 exposure_type,description,units,has_values,has_score,schema_version
 pm25,particulate matter 2.5,ugm3,true,true,1.0.0
 o3,ozone,ppm,true,true,1.0.0
-hwaste,hazardous waste,distance from site(miles),false,false,1.0.0
+hazwaste,hazardous waste,distance from site(miles),false,false,1.0.0
 crime,crime and violence,counts per 1000 residents,false,false,1.0.0
-ruenv,rural vs urban environment,number of residents,false,false,1.0.0
+r_u_env,rural vs urban environment,number of residents,false,false,1.0.0
 poverty,poverty,either at or below poverty level or not,false,false,1.0.0
 ses,socioeconomic status,percentage of US Census-tract population living below the poverty line,false,false,1.0.0

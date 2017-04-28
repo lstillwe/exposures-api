@@ -52,7 +52,6 @@ class GetO3ExposureData(GetExposureData):
         return sql
 
     def get_values(self, **kwargs):
-        # print(kwargs)
         # {'kwargs': {'statistical_type': 'max', 'temporal_resolution': 'day', 'exposure_point': 'alkd',\
         #  'end_date': '2001-02-01', 'start_date': '2001-01-02', 'exposure_type': 'o3'}}
         session = Session()
@@ -75,9 +74,9 @@ class GetO3ExposureData(GetExposureData):
                     result = session.execute(sql)
                 else:
                     result = session.execute(sql).scalar()
-
+                # return empty string "" if data is not available
                 if not result:
-                    result = 'Not Available'
+                    result = ''
 
                 if tres == "hour":
                  for row in result:
@@ -98,7 +97,7 @@ class GetO3ExposureData(GetExposureData):
     # supports 7dayrisk and 14dayrisk total scores
     # applies to 7 or 14 days, previous to dates provided (including date provided)
     # if a full set of data is not available for 7dayrisk - 7 rows returned,
-    # or 14dayrisk - 14 rows returned, "Not Available" will be returned
+    # or 14dayrisk - 14 rows returned, the empty string "" will be returned
     def get_scores(self, **kwargs):
         # {'kwargs': {'temporal_resolution': 'day', 'exposure_point': 'alkd', 'score_type': '7dayrisk',\
         #  'end_date': '2001-02-01', 'start_date': '2001-01-02', 'exposure_type': 'o3'}}
@@ -131,14 +130,14 @@ class GetO3ExposureData(GetExposureData):
 
                     result = session.execute(sql).scalar()
 
-                    # 1: 24h max ozone ≤ 0.050 ppm
-                    # 2: 24h max ozone 0.051 – 0.075 ppm
-                    # 3: 24h max ozone 0.076 - 0.100 ppm
-                    # 4: 24h max ozone 0.101 - 0.125 ppm
-                    # 5: 24h max ozone > 0.125 ppm
+                    # DESo = 1 if 24h max ozone ≤ 0.050 ppm
+                    # DESo = 2 if 24h max ozone 0.051 – 0.075 ppm
+                    # DESo = 3 if 24h max ozone 0.076-0.100 ppm
+                    # DESo = 4 if 24h max ozone 0.101-0.125 ppm
+                    # DESo = 5 if 24h max ozone > 0.125 ppm
 
                     if not result:
-                        scores = 'Not Available'
+                        scores = ''
                         break
                     elif result <= 0.050:
                         result = 1
@@ -156,7 +155,7 @@ class GetO3ExposureData(GetExposureData):
                     # iterate to next day
                     d += delta
 
-                if scores == 'Not Available':
+                if scores == '':
                     risk = scores
                 else:
                     risk = scores / date_range
@@ -194,7 +193,6 @@ def get_dates(**kwargs):
     return data
 
 def get_values(**kwargs):
-    # print(kwargs)
     date_args = {'date_table': 'cmaq', 'date_column': 'utc_date_time', 'start_date': kwargs.get('start_date'),
             'end_date': kwargs.get('end_date')}
     (valid_date, message) = exp.validate_date_range(**date_args)
@@ -209,7 +207,6 @@ def get_values(**kwargs):
 
 
 def get_scores(**kwargs):
-    # print(kwargs)
     date_args = {'date_table': 'cmaq', 'date_column': 'utc_date_time', 'start_date': kwargs.get('start_date'),
             'end_date': kwargs.get('end_date')}
     (valid_date, message) = exp.validate_date_range(**date_args)

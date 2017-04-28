@@ -52,7 +52,6 @@ class GetPm25ExposureData(GetExposureData):
         return sql
 
     def get_values(self, **kwargs):
-        # print(kwargs)
         # {'kwargs': {'statistical_type': 'max', 'temporal_resolution': 'day', 'exposure_point': 'alkd',\
         #  'end_date': '2001-02-01', 'start_date': '2001-01-02', 'exposure_type': 'pm25'}}
         session = Session()
@@ -75,9 +74,9 @@ class GetPm25ExposureData(GetExposureData):
                     result = session.execute(sql)
                 else:
                     result = session.execute(sql).scalar()
-
+                # return empty string "" if data is not available
                 if not result:
-                    result = 'Not Available'
+                    result = ''
 
                 if tres == "hour":
                  for row in result:
@@ -98,7 +97,7 @@ class GetPm25ExposureData(GetExposureData):
     # supports 7dayrisk and 14dayrisk total scores
     # applies to 7 or 14 days, previous to dates provided (including date provided)
     # if a full set of data is not available for 7dayrisk - 7 rows returned,
-    # or 14dayrisk - 14 rows returned, "Not Available" will be returned
+    # or 14dayrisk - 14 rows returned, the empty string "" will be returned
     def get_scores(self, **kwargs):
         # {'kwargs': {'temporal_resolution': 'day', 'exposure_point': 'alkd', 'score_type': '7dayrisk',\
         #  'end_date': '2001-02-01', 'start_date': '2001-01-02', 'exposure_type': 'pm25'}}
@@ -131,13 +130,13 @@ class GetPm25ExposureData(GetExposureData):
 
                     result = session.execute(sql).scalar()
 
-                    # 1: 24h max PM2.5 < 4.0 μg/m3
-                    # 2: 24h max PM2.5 4.0-7.06 μg/m3
-                    # 3: 24h max PM2.5 7.007-8.97 μg/m3
-                    # 4: 24h max PM 2.5 8.98-11.36 μg/m3
-                    # 5: 24h max PM2.5 > 11.37 μg/m3
+                    # DESpm = 1 if 24h max PM2.5 < 4.0 μg/m3
+                    # DESpm = 2 if 24h max PM2.5 4.0-7.06 μg/m3
+                    # DESpm = 3 if 24h max PM2.5 7.07-8.97 μg/m3
+                    # DESpm = 4 24h max PM 2.5 8.98-11.36 μg/m3
+                    # DESpm = 5 if 24h max PM2.5 > 11.37 μg/m3
                     if not result:
-                        scores = 'Not Available'
+                        scores = ''
                         break
                     elif result < 4.0:
                         result = 1
@@ -145,16 +144,16 @@ class GetPm25ExposureData(GetExposureData):
                         result = 2
                     elif 7.06 <= result < 8.97:
                         result = 3
-                    elif 8.97 <= result < 11.36:
+                    elif 8.97 <= result < 11.37:
                         result = 4
-                    elif result >= 11.36:
+                    elif result >= 11.37:
                         result = 5
 
                     scores += result
 
                     # iterate to next day
                     d += delta
-                if scores == 'Not Available':
+                if scores == '':
                     risk = scores
                 else:
                     risk = scores / date_range
@@ -192,7 +191,6 @@ def get_dates(**kwargs):
     return data
 
 def get_values(**kwargs):
-    # print(kwargs)
     date_args = {'date_table': 'cmaq', 'date_column': 'utc_date_time', 'start_date': kwargs.get('start_date'),
             'end_date': kwargs.get('end_date')}
     (valid_date, message) = exp.validate_date_range(**date_args)
@@ -207,7 +205,6 @@ def get_values(**kwargs):
 
 
 def get_scores(**kwargs):
-    # print(kwargs)
     date_args = {'date_table': 'cmaq', 'date_column': 'utc_date_time', 'start_date': kwargs.get('start_date'),
             'end_date': kwargs.get('end_date')}
     (valid_date, message) = exp.validate_date_range(**date_args)

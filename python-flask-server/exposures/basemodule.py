@@ -75,6 +75,11 @@ class GetExposureData(object):
         return False
 
     def validate_date_range(self, **args):
+        try:
+            datetime.strptime(args.get('start_date'), '%Y-%m-%d')
+            datetime.strptime(args.get('end_date'), '%Y-%m-%d')
+        except ValueError:
+            return False, ('Not Found', 400, {'x-error': 'Invalid date range'})
         if self.is_invalid_date_range(args.get('start_date'), args.get('end_date')):
             return False, ('Not Found', 400, {'x-error': 'Invalid date range'})
         if self.is_before_date_range(args.get('date_table'), args.get('date_column'), args.get('end_date')):

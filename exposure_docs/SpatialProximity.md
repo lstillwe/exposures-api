@@ -1,4 +1,4 @@
-## Issues regarding spatial queries and proximity - plus importance of precision. ##
+## Issues regarding spatial queries and proximity - plus importance of precision
 
 Accuracy is the tendency of your measurements to agree with the true values. Precision is the degree to which your measurements pin down an actual value. The question is about an interplay of accuracy and precision.
 

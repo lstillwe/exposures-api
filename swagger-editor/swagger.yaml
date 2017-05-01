@@ -154,7 +154,6 @@ paths:
           description: "No date range found for exposure type"
     
     
-
 definitions:
   exposure:
     type: object
@@ -273,9 +272,9 @@ parameters:
     name: score_type
     in: query
     required: false
-    description: "The exposure score type to return. The accepted values vary by exposure type. For pm25 values are '7day', '14day'. Default is '7day' (NOT COMPLETE)."
+    description: "The exposure score type to return. The accepted values vary by exposure type. For pm25 values are '7dayrisk', '14dayrisk'. Default is '7dayrisk' (NOT COMPLETE)."
     type: string
-    default: '7day'
+    default: '7dayrisk'
     
   statistical_type:
     name: statistical_type

@@ -4,6 +4,7 @@ from datetime import datetime, date, timedelta
 from configparser import ConfigParser
 from flask import jsonify
 import sys
+import re
 
 parser = ConfigParser()
 parser.read('ini/connexion.ini')
@@ -119,6 +120,43 @@ class GetExposureData(object):
                     return False, ('Not Found', 400, {'x-error': 'Invalid exposure_point'}), []
 
         return True, '', points
+
+    def validate_coordinate_point(self, **args):
+
+        lat = args.get('latitude')
+        lon = args.get('longitude')
+        pt = [lat, lon]
+
+        # if lat is populated - make sure lon is too - and vise versa
+        if (lat is None) and (lon is not None) or (lat is not None) and (lon is None):
+            return False, ('Not Found', 400, {'x-error': 'Both latitude and longitude must be specified to search for'
+                                                         ' a point'}), []
+        # check format of coordinates, if provided
+        if lat is not None and len is not None:
+            # check latitude
+            if re.match("^(\+|-)?(?:90(?:(?:\.0{1,6})?)|(?:[0-9]|[1-8][0-9])(?:(?:\.[0-9]{1,6})?))$", lat) is None:
+                return False, ('Not Found', 400, {'x-error': 'Invalid latitude'}), []
+
+            # check longitude
+            if re.match("^(\+|-)?(?:180(?:(?:\.0{1,6})?)|(?:[0-9]|[1-9][0-9]|1[0-7][0-9])(?:(?:\.[0-9]{1,6})?))$", lon) is None:
+                return False, ('Not Found', 400, {'x-error': 'Invalid longitude'}), []
+
+        return True, '', pt
+
+    def validate_coordinate_radius(self, **args):
+
+        radius_str = args.get('radius')
+        try:
+            radius = int(radius_str)
+        except ValueError as ex:
+            return False, ('Not Found', 400, {'x-error': 'Invalid radius'}), -1
+
+         # set max value to 500 meters for now
+        if radius > 500:
+            return False, ('Not Found', 400, {'x-error': 'Invalid radius. Must be <= 500'}), -1
+
+
+        return True, '', radius
 
     def get_date_list(self, **kwargs):
         date_list = ([datetime.strftime(datetime.strptime(kwargs.get('start_date'), '%Y-%m-%d').date() + timedelta(days=i), '%Y-%m-%d')] for i in range(((datetime.strptime(kwargs.get('end_date'), '%Y-%m-%d')) - (datetime.strptime(kwargs.get('start_date'), '%Y-%m-%d'))).days + 1))

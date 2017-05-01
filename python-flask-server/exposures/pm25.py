@@ -126,7 +126,8 @@ class GetPm25ExposureData(GetExposureData):
 
                     sql = "select max(coalesce(pm25_primary,0) + coalesce(pm25_secondary,0)) from cmaq " \
                             "where cast(utc_date_time as date) = cast('" + d_as_str + "' as date) " \
-                            "and ST_DWithin(ST_GeographyFromText('POINT(" + pt[1] + " " + pt[0] + ")'), location, 2)"
+                            "and ST_DWithin(ST_GeographyFromText('POINT(" + pt[1] + " " + pt[0] + ")'), location, " +\
+                            self.radius_meters + ")"
 
                     result = session.execute(sql).scalar()
 
@@ -176,8 +177,23 @@ statistical_type_set = {'max', 'mean', 'median'}
 exp = GetPm25ExposureData()
 
 def get_coordinates(**kwargs):
+
+    (valid_points, message, pt) = exp.validate_coordinate_point(**kwargs)
+    if not valid_points:
+        return message
+
+    (valid_radius, message, radius) = exp.validate_coordinate_radius(**kwargs)
+    if not valid_radius:
+        return message
+
+    if pt[0] is None:
+        sql = "select distinct latitude, longitude from cmaq order by latitude;"
+    else:
+        sql = "select distinct latitude, longitude from cmaq where ST_DWithin(ST_GeographyFromText('POINT("\
+              + pt[1] + " " + pt[0] + ")'), location," + str(radius) + ")"
+
     session = Session()
-    sql = "select distinct latitude, longitude from cmaq order by latitude;"
+
     results = session.execute(sql)
     session.close()
     data = jsonify([dict(latitude=str(o.latitude), longitude=str(o.longitude))
@@ -202,7 +218,6 @@ def get_values(**kwargs):
         return 'Not Found', 400, {'x-error': 'Invalid statistical_type'}
 
     return exp.get_values(**kwargs)
-
 
 def get_scores(**kwargs):
     date_args = {'date_table': 'cmaq', 'date_column': 'utc_date_time', 'start_date': kwargs.get('start_date'),

@@ -1,6 +1,6 @@
 ## References and Notes
 
-[1] Spatial-temporal exposure model is based one developed by: Batterman S, Ganguly R, Isakov V, Burke J, Arunachalam S, Snyder M, Robins T, Lewis T. Dispersion Modeling of Traffic-Related Air Pollutant Exposures and Health Effects among Children with Asthma in Detroit, Michigan. Transp Res Rec. 2014l2452:105–112. [https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4486042/](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4486042/).
+[1] Spatial-temporal exposure model is based on one developed by: Batterman S, Ganguly R, Isakov V, Burke J, Arunachalam S, Snyder M, Robins T, Lewis T. Dispersion Modeling of Traffic-Related Air Pollutant Exposures and Health Effects among Children with Asthma in Detroit, Michigan. Transp Res Rec. 2014l2452:105–112. [https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4486042/](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4486042/).
 
 - Near-roadway EXposure and Urban air pollutant Study (NEXUS) air pollution epidemiology study.
 - Summary: exposure based on exposure to carbon monoxide, nitrogen oxides, particulate matter under 2.5 microns in diameter (PM2.5), and diesel exhaust emissions near roadways.  

@@ -27,6 +27,9 @@ DES14o = (DESo1+DESo2…DESo14)/14
 
 **Caveat**: The cutoffs are based on [4], [5], and [6]. As with PM2.5, the ozone exposure cutoffs that we propose are lower than the US EPA AQI breakpoints US EPA AQI breakpoints: 8-h average: 0-54 ppb, 55-70 ppb, 71-85 ppm 86-105 ppb, 106-200 ppb; 1-h average: 125-164 ppb, 165-204 ppb, 205-404 ppb, 405-504 ppb, 505-604 ppb ([https://en.wikipedia.org/wiki/Air_quality_index](https://en.wikipedia.org/wiki/Air_quality_index))[3].
 
+## References
+https://github.com/mjstealey/datatranslator/blob/develop/exposure_docs/references.md
+
 ## Implemented as
 
 Code: 

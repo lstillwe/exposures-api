@@ -1,7 +1,7 @@
 exposure_type,description,units,has_values,has_score,schema_version
 pm25,exposure to airborne particulates: scores range from 1 (low < 4.0 μg/m3) to 5 (high > 11.37 μg/m3); values returned in μg/m3 abbreviated as ugm3,ugm3,true,true,1.0.0
 o3,exposure to ozone: scores range from 1 (low ≤ 0.050 ppm) to 5 (high > 0.125 ppm); values returned in ppm,ppm,true,true,1.0.0
-haz_waste,exposure to hazardous waste: scores range from 1 (low - residence >50 miles from site) to 3 (high - residence <1 mile from site) (defined for each type of site: ActiveDisaster, ActiveSQG, ActiveLQG, ActiveTreatment, InactiveHazard, Superfund); values returned in miles,miles,false,false,1.0.0
+haz_waste,exposure to hazardous waste: scores range from 1 (low - residence >50 miles from site) to 3 (high - residence <1 mile from site) (scores returned for ActiveDisaster, ActiveSQG, ActiveLQG, ActiveTreatment, InactiveHazard, Superfund); values returned in miles,miles,false,false,1.0.0
 crime,exposure to crime and violence: scores range from 1 (less crime) – 10 (more crime) relative to national distribution; values returned as counts per 1000 residents,count,false,false,1.0.0
 res_den,exposure to residential density: scores range from 1 (pop > 50000) to 3 (pop < 2500); values returned as number of residents,count,false,false,1.0.0
 poverty,exposure to poverty: scores range from 0 (above poverty line) to 1 (≤ poverty line); values returned as boolean 0 or 1 corresponding to score,boolean,false,false,1.0.0

@@ -32,6 +32,9 @@ Hazardous waste exposure 'scores' (calculated for each of the above six types of
 
 **Note**: The categories are based on [7-12], with numerous studies showing an increased risk of cancer and a variety of other health outcomes, including those specific to pregnant women and children; as such, these exposures might represent a good point of synergy between Green Team and Blue Team
 
+## References
+https://github.com/mjstealey/datatranslator/blob/develop/exposure_docs/references.md
+
 ## Implemented as
 
 Code: 

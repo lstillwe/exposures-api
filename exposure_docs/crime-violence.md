@@ -22,6 +22,9 @@ Crime exposure 'score':[13]
 
 **Caveat**: The cutoffs in [13] are based on proprietary models; we will need to identify appropriate cutoffs, perhaps by examining the overall distribution of crime rates (i.e., across the nation) and then statistically generating appropriate cutoffs
 
+## References
+https://github.com/mjstealey/datatranslator/blob/develop/exposure_docs/references.md
+
 ## Implemented as
 
 Code: 

@@ -54,6 +54,9 @@ DES14pm = (DESP1+DESP2…DESP14)/14
 
 **Caveat**: This approach does not account for exposures prior to the Ts date, however, we are assuming that the impact of high exposures is relatively short (<1 or 2 weeks).
 
+## References
+https://github.com/mjstealey/datatranslator/blob/develop/exposure_docs/references.md
+
 ## Implemented as
 
 Code: 

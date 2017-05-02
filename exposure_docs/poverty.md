@@ -1,6 +1,6 @@
 # Exposure to Poverty (poverty)
 
-**Last Updated**: 04/28/2017
+**Last Updated**: 05/02/2017
 
 ## Overview
 

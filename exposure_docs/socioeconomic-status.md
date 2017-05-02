@@ -27,6 +27,9 @@ SES exposure 'scores' (based on the percentage of US Census Tract population liv
 
 ***Note**: The ACS data will not be used for Green Team’s initial models
 
+## References
+https://github.com/mjstealey/datatranslator/blob/develop/exposure_docs/references.md
+
 ## Implemented as
 
 Code: 

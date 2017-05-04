@@ -134,11 +134,11 @@ class GetExposureData(object):
         # check format of coordinates, if provided
         if lat is not None and len is not None:
             # check latitude
-            if re.match("^(\+|-)?(?:90(?:(?:\.0{1,6})?)|(?:[0-9]|[1-8][0-9])(?:(?:\.[0-9]{1,6})?))$", lat) is None:
+            if re.match("^(\+|-)?(?:90(?:(?:\.0{1,})?)|(?:[0-9]|[1-8][0-9])(?:(?:\.[0-9]{1,})?))$", lat) is None:
                 return False, ('Not Found', 400, {'x-error': 'Invalid latitude'}), []
 
             # check longitude
-            if re.match("^(\+|-)?(?:180(?:(?:\.0{1,6})?)|(?:[0-9]|[1-9][0-9]|1[0-7][0-9])(?:(?:\.[0-9]{1,6})?))$", lon) is None:
+            if re.match("^(\+|-)?(?:180(?:(?:\.0{1,})?)|(?:[0-9]|[1-9][0-9]|1[0-7][0-9])(?:(?:\.[0-9]{1,})?))$", lon) is None:
                 return False, ('Not Found', 400, {'x-error': 'Invalid longitude'}), []
 
         return True, '', pt

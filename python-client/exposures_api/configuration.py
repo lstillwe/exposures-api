@@ -3,7 +3,7 @@
 """
     Environmental Exposures API
 
-    Environmental Exposures API
+    API for environmental exposure models for NIH Data Translator program
 
     OpenAPI spec version: 1.0.0
     Contact: stealey@renci.org
@@ -74,7 +74,7 @@ class Configuration(object):
 
         # Logging Settings
         self.logger = {}
-        self.logger["package_logger"] = logging.getLogger("swagger_client")
+        self.logger["package_logger"] = logging.getLogger("exposures_api")
         self.logger["urllib3_logger"] = logging.getLogger("urllib3")
         # Log format
         self.logger_format = '%(asctime)s %(levelname)s %(message)s'

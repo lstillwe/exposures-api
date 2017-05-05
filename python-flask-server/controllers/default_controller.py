@@ -1,22 +1,18 @@
+import sys
+import importlib
 from sqlalchemy import create_engine, exists, and_
-from sqlalchemy.orm import sessionmaker
 from models import Cmaq, ExposureType
 from flask import jsonify
-import importlib
-import sys
 from configparser import ConfigParser
+from controllers import Session
 
 parser = ConfigParser()
 parser.read('ini/connexion.ini')
-POSTGRES_ENGINE = 'postgres://' + parser.get('postgres', 'username') + ':' + parser.get('postgres', 'password') \
-                  + '@' + parser.get('postgres', 'host') + ':' + parser.get('postgres', 'port') \
-                  + '/' + parser.get('postgres', 'database')
 sys.path.append(parser.get('sys-path', 'exposures'))
-engine = create_engine(POSTGRES_ENGINE)
-Session = sessionmaker(bind=engine)
+sys.path.append(parser.get('sys-path', 'controllers'))
 
 
-def exposures_exposure_type_coordinates_get(exposure_type, latitude = None, longitude = None, radius = None) -> str:
+def exposures_exposure_type_coordinates_get(exposure_type, latitude = None, longitude = None, radius = None, page = None) -> str:
     session = Session()
     ret = session.query(exists().where(and_(ExposureType.exposure_type == exposure_type,
                                             ExposureType.has_values))).scalar()
@@ -51,7 +47,7 @@ def exposures_exposure_type_dates_get(exposure_type) -> str:
 
 
 def exposures_exposure_type_scores_get(exposure_type, start_date, end_date, exposure_point, \
-                                       temporal_resolution=None, score_type=None) -> str:
+                                       temporal_resolution=None, score_type=None, radius = None, page = None) -> str:
     session = Session()
     ret = session.query(exists().where(and_(ExposureType.exposure_type == exposure_type,
                                             ExposureType.has_values))).scalar()
@@ -69,7 +65,7 @@ def exposures_exposure_type_scores_get(exposure_type, start_date, end_date, expo
 
 
 def exposures_exposure_type_values_get(exposure_type, start_date, end_date, exposure_point, \
-                                       temporal_resolution=None, statistical_type=None) -> str:
+                                       temporal_resolution=None, statistical_type=None, radius = None, page = None) -> str:
     session = Session()
     ret = session.query(exists().where(and_(ExposureType.exposure_type == exposure_type,
                                             ExposureType.has_values))).scalar()

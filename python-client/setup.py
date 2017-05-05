@@ -3,7 +3,7 @@
 """
     Environmental Exposures API
 
-    Environmental Exposures API
+    API for environmental exposure models for NIH Data Translator program
 
     OpenAPI spec version: 1.0.0
     Contact: stealey@renci.org
@@ -25,7 +25,7 @@
 import sys
 from setuptools import setup, find_packages
 
-NAME = "swagger_client"
+NAME = "exposures_api"
 VERSION = "1.0.0"
 
 # To install the library, run the following
@@ -48,7 +48,7 @@ setup(
     packages=find_packages(),
     include_package_data=True,
     long_description="""\
-    Environmental Exposures API
+    API for environmental exposure models for NIH Data Translator program
     """
 )
 

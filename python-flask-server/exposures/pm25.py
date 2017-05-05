@@ -3,12 +3,11 @@ from configparser import ConfigParser
 from flask import jsonify
 from datetime import datetime, timedelta
 from controllers import Session
-import sys
 
 parser = ConfigParser()
 parser.read('ini/connexion.ini')
 
-limit = 2
+limit = 100
 offset = 0
 
 
@@ -51,18 +50,27 @@ class GetPm25ExposureData(GetExposureData):
     def get_values(self, **kwargs):
         # kwargs: exposure_type, start_date, end_date, exposure_point, temporal_resolution=None,
         #         statistical_type=None, radius = None, page = None
-        session = Session()
+        (valid_page, message) = GetExposureData.validate_page(self, **kwargs)
+        if not valid_page:
+            return message
+
         (valid_points, message, point_list) = GetExposureData.validate_exposure_point(self, **kwargs)
         if not valid_points:
             return message
+
+        (valid_radius, message, radius) = GetExposureData.validate_coordinate_radius(self, **kwargs)
+        if not valid_radius:
+            return message
+
         date_list = GetExposureData.get_date_list(self, **kwargs)
 
         # retrieve the temporal resolution and the statistical type
         tres = kwargs.get('temporal_resolution')
         stype = kwargs.get('statistical_type')
+        self.radius_meters = kwargs.get('radius')
 
         sql_array = []
-
+        session = Session()
         for dt in date_list:
             for pt in point_list:
                 sql = self.create_values_query(dt, pt, self.radius_meters, stype, tres)
@@ -100,13 +108,22 @@ class GetPm25ExposureData(GetExposureData):
     def get_scores(self, **kwargs):
         # kwargs: exposure_type, start_date, end_date, exposure_point, temporal_resolution=None,
         #         score_type=None, radius = None, page = None
-        session = Session()
+        (valid_page, message) = GetExposureData.validate_page(self, **kwargs)
+        if not valid_page:
+            return message
+
         (valid_points, message, point_list) = GetExposureData.validate_exposure_point(self, **kwargs)
         if not valid_points:
             return message
-        date_list = GetExposureData.get_date_list(self, **kwargs)
-        sql_array = []
 
+        (valid_radius, message, radius) = GetExposureData.validate_coordinate_radius(self, **kwargs)
+        if not valid_radius:
+            return message
+
+        date_list = GetExposureData.get_date_list(self, **kwargs)
+        self.radius_meters = kwargs.get('radius')
+        sql_array = []
+        session = Session()
         for dt in date_list:
             for pt in point_list:
 
@@ -118,7 +135,6 @@ class GetPm25ExposureData(GetExposureData):
                 end_date = datetime.strptime(dt[0], '%Y-%m-%d')
                 delta = timedelta(days=1)
                 scores = 0
-
 
                 while d <= end_date:
                     d_as_str = d.strftime("%Y-%m-%d")
@@ -193,14 +209,10 @@ def get_coordinates(**kwargs):
         return message
 
     page = int(kwargs.get('page'))
-    if page > 1:
-        offset = (page - 1) * limit
-    else:
-        offset = 1
+    offset = (page - 1) * limit
 
     if pt[0] is None:
         sql = "select distinct latitude, longitude from cmaq order by latitude limit %s offset %s ;" % (limit, offset)
-        print(sql)
     else:
         sql = "select distinct latitude, longitude from cmaq where ST_DWithin(ST_GeographyFromText('POINT("\
               + pt[1] + " " + pt[0] + ")'), location," + str(radius) + ") limit %s offset %s ;" % (limit, offset)

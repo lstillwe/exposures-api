@@ -3,7 +3,7 @@
 """
     Environmental Exposures API
 
-    Environmental Exposures API
+    API for environmental exposure models for NIH Data Translator program
 
     OpenAPI spec version: 1.0.0
     Contact: stealey@renci.org
@@ -28,9 +28,9 @@ import os
 import sys
 import unittest
 
-import swagger_client
-from swagger_client.rest import ApiException
-from swagger_client.models.exposure import Exposure
+import exposures_api
+from exposures_api.rest import ApiException
+from exposures_api.models.exposure import Exposure
 
 
 class TestExposure(unittest.TestCase):
@@ -46,7 +46,7 @@ class TestExposure(unittest.TestCase):
         """
         Test Exposure
         """
-        model = swagger_client.models.exposure.Exposure()
+        model = exposures_api.models.exposure.Exposure()
 
 
 if __name__ == '__main__':

@@ -3,7 +3,7 @@
 """
     Environmental Exposures API
 
-    Environmental Exposures API
+    API for environmental exposure models for NIH Data Translator program
 
     OpenAPI spec version: 1.0.0
     Contact: stealey@renci.org

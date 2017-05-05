@@ -66,7 +66,7 @@ paths:
       - $ref: '#/parameters/exposure_type'
     get:
       summary: "Get exposure value for a given environmental factor at exposure location(s)"
-      description: "Retrieve the computed exposure value(s) for a given environmental exposure factor, time period, and location(s)"
+      description: "Retrieve the computed exposure value(s) for a given environmental exposure factor, time period, and location(s)."
       produces:
         - application/json
       parameters:
@@ -76,6 +76,7 @@ paths:
         - $ref: '#/parameters/temporal_resolution'
         - $ref: '#/parameters/statistical_type'
         - $ref: '#/parameters/radius'
+        - $ref: '#/parameters/page'
       responses:
         200:
           description: OK
@@ -93,7 +94,7 @@ paths:
       - $ref: '#/parameters/exposure_type'
     get:
       summary: "Get exposure score for a given environmental factor at exposure location(s)"
-      description: "Retrieve the computed exposure score(s) for a given environmental exposure factor, time period, and location(s)"
+      description: "Retrieve the computed exposure score(s) for a given environmental exposure factor, time period, and location(s)."
       produces:
         - application/json
       parameters:
@@ -103,6 +104,7 @@ paths:
         - $ref: '#/parameters/temporal_resolution'
         - $ref: '#/parameters/score_type'
         - $ref: '#/parameters/radius'
+        - $ref: '#/parameters/page'
       responses:
         200:
           description: OK
@@ -120,13 +122,14 @@ paths:
       - $ref: '#/parameters/exposure_type'
     get:
       summary: "Get exposure location(s) as latitude, longitude coordinates"
-      description: "Returns paginated list of available latitude, longitude coordinates for given exposure_type. Optionally the user can provide a latitude, longitude coordinate with a radius in meters to discover if an exposure location is within the requested range"
+      description: "Returns paginated list of available latitude, longitude coordinates for given exposure_type. Optionally the user can provide a latitude, longitude coordinate with a radius in meters to discover if an exposure location is within the requested range."
       produces:
         - application/json
       parameters:
         - $ref: '#/parameters/latitude'
         - $ref: '#/parameters/longitude'
         - $ref: '#/parameters/radius'
+        - $ref: '#/parameters/page'
       responses:
         200:
           description: "Exposure points"
@@ -315,3 +318,11 @@ parameters:
     description: "radius in meters to search within for exposure point when a coordinate is provided. Range from 0 to 500"
     type: string
     default: "0"
+    
+  page:
+    name: page
+    in: query
+    required: false
+    description: "Page number. Return up to 100 items per page"
+    type: string
+    default: 1

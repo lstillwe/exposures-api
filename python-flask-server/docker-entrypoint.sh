@@ -23,6 +23,7 @@ _set_connection_ini() {
     echo "" >> ini/connexion.ini
     echo "[sys-path]" >> ini/connexion.ini
     echo "exposures = "${SYS_PATH_EXPOSURES} >> ini/connexion.ini
+    echo "controllers = "${SYS_PATH_CONTROLLERS} >> ini/connexion.ini
     echo "" >> ini/connexion.ini
     echo "[postgres]" >> ini/connexion.ini
     echo "host = "${POSTGRES_HOST} >> ini/connexion.ini

@@ -3,7 +3,7 @@
 """
     Environmental Exposures API
 
-    Environmental Exposures API
+    API for environmental exposure models for NIH Data Translator program
 
     OpenAPI spec version: 1.0.0
     Contact: stealey@renci.org
@@ -28,16 +28,16 @@ import os
 import sys
 import unittest
 
-import swagger_client
-from swagger_client.rest import ApiException
-from swagger_client.apis.default_api import DefaultApi
+import exposures_api
+from exposures_api.rest import ApiException
+from exposures_api.apis.default_api import DefaultApi
 
 
 class TestDefaultApi(unittest.TestCase):
     """ DefaultApi unit test stubs """
 
     def setUp(self):
-        self.api = swagger_client.apis.default_api.DefaultApi()
+        self.api = exposures_api.apis.default_api.DefaultApi()
 
     def tearDown(self):
         pass

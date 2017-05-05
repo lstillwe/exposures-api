@@ -1,19 +1,14 @@
-from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker
+import sys
+import re
 from datetime import datetime, date, timedelta
 from configparser import ConfigParser
 from flask import jsonify
-import sys
-import re
+from controllers import Session
 
 parser = ConfigParser()
 parser.read('ini/connexion.ini')
-POSTGRES_ENGINE = 'postgres://' + parser.get('postgres', 'username') + ':' + parser.get('postgres', 'password') \
-                  + '@' + parser.get('postgres', 'host') + ':' + parser.get('postgres', 'port') \
-                  + '/' + parser.get('postgres', 'database')
 sys.path.append(parser.get('sys-path', 'exposures'))
-engine = create_engine(POSTGRES_ENGINE)
-Session = sessionmaker(bind=engine)
+sys.path.append(parser.get('sys-path', 'controllers'))
 
 
 class GetExposureData(object):
@@ -38,29 +33,15 @@ class GetExposureData(object):
         return max_date
 
     def is_before_date_range(self, *args):
-        # session = Session()
-        # date_table = args[0]
-        # date_column = args[1]
         date_to_compare = datetime.strptime(args[2], '%Y-%m-%d')
-        # sql = ('select min(' + date_column + ') from ' + date_table + ';')
-        # min_date = datetime.strftime(session.execute(sql).scalar(), '%Y-%m-%d')
-        # min_date = datetime.strptime(min_date, '%Y-%m-%d')
         min_date = self.min_date(*args)
-        # session.close()
         if min_date > date_to_compare:
             return True
 
         return False
 
     def is_after_date_range(self, *args):
-        # session = Session()
-        # date_table = args[0]
-        # date_column = args[1]
         date_to_compare = datetime.strptime(args[2], '%Y-%m-%d')
-        # sql = ('select max(' + date_column + ') from ' + date_table + ';')
-        # max_date = datetime.strftime(session.execute(sql).scalar(), '%Y-%m-%d')
-        # max_date = datetime.strptime(max_date, '%Y-%m-%d')
-        # session.close()
         max_date = self.max_date(*args)
         if max_date < date_to_compare:
             return True
@@ -155,8 +136,18 @@ class GetExposureData(object):
         if radius > 500:
             return False, ('Not Found', 400, {'x-error': 'Invalid radius. Must be <= 500'}), -1
 
-
         return True, '', radius
+
+    def validate_page(self, **args):
+        page_str = args.get('page')
+        try:
+            page = int(page_str)
+        except ValueError as ex:
+            return False, ('Invalid page', 400, {'x-error': 'page must be integer > 0'})
+        if page < 1:
+            return False, ('Invalid page', 400, {'x-error': 'page must be integer > 0'})
+
+        return True, ''
 
     def get_date_list(self, **kwargs):
         date_list = ([datetime.strftime(datetime.strptime(kwargs.get('start_date'), '%Y-%m-%d').date() + timedelta(days=i), '%Y-%m-%d')] for i in range(((datetime.strptime(kwargs.get('end_date'), '%Y-%m-%d')) - (datetime.strptime(kwargs.get('start_date'), '%Y-%m-%d'))).days + 1))

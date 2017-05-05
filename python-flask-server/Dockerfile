@@ -11,6 +11,7 @@ ENV API_SERVER_KEYFILE=
 ENV API_SERVER_CERTFILE=
 # [sys-path]
 ENV SYS_PATH_EXPOSURES=/exposures-api/exposures
+ENV SYS_PATH_CONTROLLERS=/exposures-api/controllers
 # [postgres]
 ENV POSTGRES_HOST=backend
 ENV POSTGRES_PORT=5432
